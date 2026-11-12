@@ -10,11 +10,9 @@ def drop_piece(player_in, col, game): #drops pieces in place based on the input
     for row in range(BOARD_HEIGHT + 1):
         if row == BOARD_HEIGHT: #places on bottom if checker passes board
             game[row - 1][col] = player_in
-            print(str(row - 1) + ", " +str(col))
             return game, row -1, col
         if game[row][col] == "R" or game[row][col] == "Y" : #places above if another piece is placed
             game[row - 1][col] = player_in
-            print(str(row - 1) + ", " + str(col))
             return game, row -1, col
 
 
@@ -110,7 +108,6 @@ def check_win(x, y, checked_game, player_in):
         while check_bot_left(temp_x, temp_y, checked_game, player_in):
             diagonal_trbl += 1
             temp_x, temp_y = temp_x + 1, temp_y - 1
-            print("ran")
     except:
         pass
     temp_x, temp_y = x, y
@@ -147,10 +144,6 @@ def check_win(x, y, checked_game, player_in):
     except:
         pass
     temp_x, temp_y = x, y
-    print(diagonal_trbl)
-    print(diagonal_tlbr)
-    print(cross_veri)
-    print(cross_hori)
     if cross_veri > 2 or cross_hori > 2 or diagonal_tlbr > 2 or diagonal_trbl > 2:
         return True, player_in
     return False, player_in
