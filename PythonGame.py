@@ -1,10 +1,14 @@
 from time import sleep
 
 def load_board(display):
+    plus = 0 - 1
     for row in display:
         for col in row:
             print(col + "  ", end= "")
+        plus += 1
         print("")
+    for plus1 in range(plus):
+        print(str(plus1 + 1) + "  ", end= "")
 
 def drop_piece(player_in, col, game): #drops pieces in place based on the input
     for row in range(BOARD_HEIGHT + 1):
