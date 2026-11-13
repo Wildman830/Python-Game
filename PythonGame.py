@@ -20,6 +20,12 @@ def drop_piece(player_in, col, game): #drops pieces in place based on the input
             game[row - 1][col] = player_in
             return game, row -1, col
 
+def validate_temp(x, y):
+    if x < 0 or x >= BOARD_HEIGHT:
+        return True
+    if y < 0 or y > BOARD_WIDTH:
+        return True
+    return False
 
 def validate(player_in, col): #makes sure user input is valid
     if player_in != "Y" and player_in != "R":
@@ -35,22 +41,34 @@ def validate(player_in, col): #makes sure user input is valid
 
 #Cross
 def check_bot_middle(x, y, checked_game, player_in):
-    if checked_game[x + 1][y] == player_in:
+    x += 1
+    if validate_temp(x, y):
+        return False
+    if checked_game[x][y] == player_in:
         return True
     else:
         return False
 def check_mid_right(x, y, checked_game, player_in):
-    if checked_game[x][y + 1] == player_in:
+    y += 1
+    if validate_temp(x, y):
+        return False
+    if checked_game[x][y] == player_in:
         return True
     else:
         return False
 def check_mid_left(x, y, checked_game, player_in):
-    if checked_game[x][y - 1] == player_in:
+    y -= 1
+    if validate_temp(x, y):
+        return False
+    if checked_game[x][y] == player_in:
         return True
     else:
         return False
 def check_top_middle(x, y, checked_game, player_in):
-    if checked_game[x - 1][ y] == player_in:
+    x -= 1
+    if validate_temp(x, y):
+        return False
+    if checked_game[x][y] == player_in:
         return True
     else:
         return False
@@ -58,22 +76,38 @@ def check_top_middle(x, y, checked_game, player_in):
 
 #Diagonal
 def check_top_left(x, y, checked_game, player_in):
-    if checked_game[x - 1][ y - 1] == player_in:
+    x -= 1
+    y -= 1
+    if validate_temp(x, y):
+        return False
+    if checked_game[x][y] == player_in:
         return True
     else:
         return False
 def check_top_right(x, y, checked_game, player_in):
-    if checked_game[x - 1][ y + 1] == player_in:
+    x -= 1
+    y += 1
+    if validate_temp(x, y):
+        return False
+    if checked_game[x][y] == player_in:
         return True
     else:
         return False
 def check_bot_left(x, y, checked_game, player_in):
-    if checked_game[x + 1][ y - 1] == player_in:
+    x += 1
+    y -= 1
+    if validate_temp(x, y):
+        return False
+    if checked_game[x][y] == player_in:
         return True
     else:
         return False
 def check_bot_right(x, y, checked_game, player_in):
-    if checked_game[x + 1][ y + 1] == player_in:
+    x += 1
+    y += 1
+    if validate_temp(x, y):
+        return False
+    if checked_game[x][y] == player_in:
         return True
     else:
         return False
@@ -86,68 +120,54 @@ def check_win(x, y, checked_game, player_in):
     temp_x, temp_y = x, y
 
     #Top left to bottom right
-    try:
-        while check_top_left(temp_x, temp_y, checked_game, player_in):
-            diagonal_tlbr += 1
-            temp_x, temp_y = temp_x - 1, temp_y - 1
-    except:
-        pass
+    while check_top_left(temp_x, temp_y, checked_game, player_in):
+        diagonal_tlbr += 1
+        temp_x, temp_y = temp_x - 1, temp_y - 1
+    pass
     temp_x, temp_y = x, y
-    try:
-        while check_bot_right(temp_x, temp_y, checked_game, player_in):
-            diagonal_tlbr += 1
-            temp_x, temp_y = temp_x + 1, temp_y + 1
-    except:
-        pass
+    while check_bot_right(temp_x, temp_y, checked_game, player_in):
+        diagonal_tlbr += 1
+        temp_x, temp_y = temp_x + 1, temp_y + 1
+
+    pass
     temp_x, temp_y = x, y
 
     #Top right to bottom left
-    try:
-        while check_top_right(temp_x, temp_y, checked_game, player_in):
-            diagonal_trbl += 1
-            temp_x, temp_y = temp_x - 1, temp_y + 1
-    except:
-        pass
+    while check_top_right(temp_x, temp_y, checked_game, player_in):
+        diagonal_trbl += 1
+        temp_x, temp_y = temp_x - 1, temp_y + 1
+    pass
     temp_x, temp_y = x, y
-    try:
-        while check_bot_left(temp_x, temp_y, checked_game, player_in):
-            diagonal_trbl += 1
-            temp_x, temp_y = temp_x + 1, temp_y - 1
-    except:
-        pass
+    while check_bot_left(temp_x, temp_y, checked_game, player_in):
+        diagonal_trbl += 1
+        temp_x, temp_y = temp_x + 1, temp_y - 1
+    pass
     temp_x, temp_y = x, y
 
 
     #Horizontal
-    try:
-        while check_mid_left(temp_x, temp_y, checked_game, player_in):
-            cross_hori += 1
-            temp_x, temp_y = temp_x , temp_y - 1
-    except:
-        pass
+    while check_mid_left(temp_x, temp_y, checked_game, player_in):
+        cross_hori += 1
+        temp_x, temp_y = temp_x , temp_y - 1
+
+    pass
     temp_x, temp_y = x, y
-    try:
-        while check_mid_right(temp_x, temp_y, checked_game, player_in):
-            cross_hori += 1
-            temp_x, temp_y = temp_x, temp_y + 1
-    except:
-        pass
+    while check_mid_right(temp_x, temp_y, checked_game, player_in):
+        cross_hori += 1
+        temp_x, temp_y = temp_x, temp_y + 1
+    pass
     temp_x, temp_y = x, y
 
     #Vertical
-    try:
-        while check_top_middle(temp_x, temp_y, checked_game, player_in):
-            cross_veri += 1
-            temp_x, temp_y = temp_x - 1, temp_y
-    except:
-        pass
+    while check_top_middle(temp_x, temp_y, checked_game, player_in):
+        cross_veri += 1
+        temp_x, temp_y = temp_x - 1, temp_y
+    pass
     temp_x, temp_y = x, y
-    try:
-        while check_bot_middle(temp_x, temp_y, checked_game, player_in):
-            cross_veri += 1
-            temp_x, temp_y = temp_x + 1, temp_y
-    except:
-        pass
+    while check_bot_middle(temp_x, temp_y, checked_game, player_in):
+        cross_veri += 1
+        temp_x, temp_y = temp_x + 1, temp_y
+    pass
     temp_x, temp_y = x, y
     if cross_veri > 2 or cross_hori > 2 or diagonal_tlbr > 2 or diagonal_trbl > 2:
         return True, player_in
