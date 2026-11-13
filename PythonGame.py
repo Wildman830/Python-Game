@@ -1,5 +1,6 @@
 from time import sleep
 import sys
+
 def load_board(display):
     plus = 0 - 1
     for row in display:
