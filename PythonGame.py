@@ -1,5 +1,5 @@
 from time import sleep
-
+import sys
 def load_board(display):
     plus = 0 - 1
     for row in display:
@@ -27,16 +27,24 @@ def validate_temp(x, y):
         return True
     return False
 
-def validate(player_in, col): #makes sure user input is valid
-    if player_in != "Y" and player_in != "R":
-        print("Invalid Player")
-        return False
-    if col <= -1 or col > BOARD_WIDTH: # if col not in range(1, BOARD_WIDTH + 1)
+def validate(col): #makes sure user input is valid
+    col = col.upper()
+    if col == "EXIT":
+        sys.exit("Exiting...")
+    try:
+        if int(col) == 1:
+            pass
+    except:
         print("Invalid Column")
         return False
-    if game[0][col] == "R" or game[0][col] == "Y":
+    if int(col) <= -1 or int(col) > BOARD_WIDTH: # if col not in range(1, BOARD_WIDTH + 1)
+        print("Invalid Column")
+        return False
+    if game[0][int(col)] == "R" or game[0][int(col)] == "Y":
         print("bad boy")
         return False
+
+
     return True
 
 #Cross
@@ -174,15 +182,16 @@ def check_win(x, y, checked_game, player_in):
     return False, player_in
 
 def play(player, game_board, won):
-    load_board(game_board)
-    player = player.upper()
-    played_col = int(input(player + " drop: ")) -1
-    if validate(player, played_col) == False:
-        sleep(3.5)
-        return win, player_win
-    game_board, placed_x, placed_y = drop_piece(player, played_col, game)
-    won, player_win = check_win(placed_x, placed_y, game, player)
-    return won, player_win, game_board
+    while True:
+        load_board(game_board)
+        played_col = input(player + " drop: ")
+        if validate(played_col) == False:
+            sleep(2)
+            continue
+        played_col = int(played_col)
+        game_board, placed_x, placed_y = drop_piece(player, played_col, game)
+        won, player_win = check_win(placed_x, placed_y, game, player)
+        return won, player_win, game_board
 
     
 
@@ -193,8 +202,8 @@ win = False
 game = [["*" for x in range(BOARD_WIDTH)]for y in range(BOARD_HEIGHT)]
 placed_x = -1
 placed_y = -1
-player_win = "null"
-player = "null"
+player_win = "Y"
+player = ""
 x = 0
 
 while win != True:
