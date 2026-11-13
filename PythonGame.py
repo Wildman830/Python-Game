@@ -1,6 +1,5 @@
 from time import sleep
 import sys
-
 def load_board(display):
     plus = 0 - 1
     for row in display:
@@ -24,7 +23,7 @@ def drop_piece(player_in, col, game): #drops pieces in place based on the input
 def validate_temp(x, y):
     if x < 0 or x >= BOARD_HEIGHT:
         return True
-    if y < 0 or y > BOARD_WIDTH:
+    if y < 0 or y > BOARD_WIDTH - 1:
         return True
     return False
 
@@ -41,7 +40,11 @@ def validate(col): #makes sure user input is valid
     if int(col) <= -1 or int(col) > BOARD_WIDTH: # if col not in range(1, BOARD_WIDTH + 1)
         print("Invalid Column")
         return False
-    if game[0][int(col)] == "R" or game[0][int(col)] == "Y":
+    try:
+        if game[0][int(col) - 1] == "R" or game[0][int(col) - 1] == "Y":
+            print("bad boy")
+            return False
+    except:
         print("bad boy")
         return False
 
@@ -189,7 +192,9 @@ def play(player, game_board, won):
         if validate(played_col) == False:
             sleep(2)
             continue
-        played_col = int(played_col)
+        played_col = int(played_col) - 1
+        print(played_col)
+        sleep(.2)
         game_board, placed_x, placed_y = drop_piece(player, played_col, game)
         won, player_win = check_win(placed_x, placed_y, game, player)
         return won, player_win, game_board
